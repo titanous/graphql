@@ -729,3 +729,11 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Igno
         }
     `)
 }
+
+func TestValidate_FooBaz(t *testing.T) {
+	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `subscription{J}`,
+		[]gqlerrors.FormattedError{
+			testutil.RuleError(`Cannot query field "directField" on type "CatOrDog".`, 3, 9),
+		},
+	)
+}

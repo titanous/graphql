@@ -209,3 +209,11 @@ func TestValidate_FieldsOnCorrectTypeErrorMessage_WorksWithLotsOfSuggestions(t *
 		t.Fatalf("Unexpected message, expected: %v, got %v", expected, message)
 	}
 }
+
+func TestValidate_FooBar(t *testing.T) {
+	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `mutation{o}`,
+		[]gqlerrors.FormattedError{
+			testutil.RuleError(`Cannot query field "directField" on type "CatOrDog".`, 3, 9),
+		},
+	)
+}
